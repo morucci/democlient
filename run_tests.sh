@@ -1,8 +1,9 @@
 #!/bin/bash
 
 echo "Flake8"
-find . -iname "*.py" | xargs flake8
+FT=$(find . -iname "*.py" | xargs flake8)
 echo
 echo "Unittests"
-nosetests
+NT=$(nosetests)
 echo
+exit $[${FT} + ${NT}]
