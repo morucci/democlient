@@ -6,4 +6,4 @@ echo
 echo "Unittests"
 NT=$(nosetests)
 echo
-exit $[${FT} + ${NT}]
+exit $[FT+NT]
