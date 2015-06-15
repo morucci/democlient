@@ -1,10 +1,8 @@
 #!/bin/bash
 
-sleep 150
-
 set -x
 
-DEMOLIB="http://softwarefactory.enovance.com/r/demolib"
+DEMOLIB="https://github.com/morucci/demolib.git"
 DEMOLIBPATH=${DEMOLIBPATH:-""}
 
 virt=$(mktemp -d)
@@ -12,18 +10,15 @@ virtualenv $virt
 source $virt/bin/activate
 
 if [ -z "$DEMOLIBPATH" ]; then
-    # Use demolib master
+    # demolib cannot be found locally fecth it from github
     clonedirtemp=$(mktemp -d)
     git clone $DEMOLIB $clonedirtemp/demolib
-    cd $clonedirtemp/demolib
-    python setup.py install
-    cd -
-else
-    # Use local demolib
-    cd $DEMOLIBPATH
-    python setup.py install
-    cd -
+    DEMOLIBPATH=$clonedirtemp
 fi
+
+cd $DEMOLIBPATH
+python setup.py install
+cd -
 
 python setup.py install
 ret=$(democlient 1)
